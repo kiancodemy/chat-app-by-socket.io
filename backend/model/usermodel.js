@@ -4,9 +4,9 @@ const { Schema } = mongoose;
 const usermodel = new Schema(
   {
     name: { type: String, require: true },
-    email: { type: String },
-    password: { type: String },
-    sender: { type: mongoose.ObjectId, ref: "User" },
+    email: { type: String, require: true },
+    password: { type: String, require: true },
+
     pic: {
       type: String,
       require: true,

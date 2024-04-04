@@ -2,6 +2,8 @@ import { Container, Box, Typography, Button, TextField } from "@mui/material";
 import Tab from "@mui/material/Tab";
 import TabContext from "@mui/lab/TabContext";
 import TabList from "@mui/lab/TabList";
+import Login from "./Login";
+import Signup from "./Signup";
 import TabPanel from "@mui/lab/TabPanel";
 import { useState } from "react";
 function Home() {
@@ -16,7 +18,7 @@ function Home() {
         sx={{
           marginBottom: "15px",
           backgroundColor: "white",
-          padding: "20px",
+          padding: "15px",
           display: "flex",
           borderRadius: "10px",
           justifyContent: "center",
@@ -72,8 +74,12 @@ function Home() {
               />
             </TabList>
           </Box>
-          <TabPanel value="1">Item One</TabPanel>
-          <TabPanel value="2">Item Two</TabPanel>
+          <TabPanel value="1">
+            <Login />
+          </TabPanel>
+          <TabPanel value="2">
+            <Signup />
+          </TabPanel>
         </TabContext>
       </Box>
     </Container>

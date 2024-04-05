@@ -1,29 +1,16 @@
 import express from "express";
-import dotenv from "dotenv";
-dotenv.config();
-import { chats } from "./data/data.js";
-const app = express();
-app.get("/chat/:id", async (req, res) => {
-  try {
-    const id = req.params.id;
-    const find = chats.find((a) => a._id === id);
-    if (find) {
-      res.send(find);
-    } else {
-      throw new Error("nothing found");
-    }
-  } catch (err) {
-    res.send(err.message);
-  }
-});
-app.get("/chat", async (req, res) => {
-  try {
-    res.send(chats);
-  } catch (err) {
-    res.send(err.message);
-  }
-});
 
+import dotenv from "dotenv";
+import router from "./router/Userroute.js";
+import connect from "./config/db.js";
+
+dotenv.config();
+
+const app = express();
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
+app.use("/users", router);
+connect();
 app.listen(process.env.PORT, () => {
   console.log("server started");
 });

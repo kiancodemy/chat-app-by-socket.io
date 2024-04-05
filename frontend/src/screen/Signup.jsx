@@ -10,7 +10,7 @@ import {
 } from "@mui/material";
 import Visibility from "@mui/icons-material/Visibility";
 import VisibilityOff from "@mui/icons-material/VisibilityOff";
-
+import { toast } from "react-toastify";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 
@@ -27,18 +27,27 @@ function Signup() {
 
     formState: { errors, isValid, isSubmitting },
   } = useForm();
-  const handleMouseDownPassword = (event) => {
-    event.preventDefault();
-  };
 
-  const onSubmit = (data) => console.log(data);
+  const onSubmit = (data) => {
+    if (password !== confirmpassword) {
+      toast.error("Passwotd and Confirm password shoud be same", {
+        position: "top-right",
+        autoClose: 2000,
+      });
+      return;
+    }
+
+    toast.success("Success Notification !", {
+      position: "top-right",
+      autoClose: 1500,
+    });
+  };
   return (
     <Stack
       onSubmit={handleSubmit(onSubmit)}
       component="form"
-      sx={{ paddingY: "10px" }}
+      sx={{ paddingY: "1px" }}
       direction="column"
-      gap={1}
     >
       <TextField
         error={errors?.name ? true : false}
@@ -138,6 +147,32 @@ function Signup() {
         label="Confirm Password"
         variant="outlined"
       />
+      <TextField
+        error={errors?.image ? true : false}
+        helperText={errors.image ? errors.image.message : " "}
+        sx={{
+          "& .MuiInputLabel-root.Mui-focused": {
+            color: !errors?.image && "#000",
+          },
+          "& .MuiOutlinedInput-root.Mui-focused .MuiOutlinedInput-notchedOutline":
+            {
+              borderColor: !errors?.image && "#000",
+            },
+        }}
+        label="Upload Image"
+        {...register("image", {
+          required: { value: true, message: "Image Is Required+" },
+        })}
+        type="file"
+        InputLabelProps={{
+          shrink: true,
+        }}
+        InputProps={{
+          inputProps: {
+            accept: "image/*",
+          },
+        }}
+      />
       <Button
         type="submit"
         sx={{
@@ -147,7 +182,7 @@ function Signup() {
           "&:hover": { backgroundColor: "#008DDA", color: "white" },
         }}
       >
-        login
+        sign up
       </Button>
     </Stack>
   );

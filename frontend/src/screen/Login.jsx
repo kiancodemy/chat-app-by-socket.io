@@ -92,32 +92,7 @@ function Login() {
         label="Password"
         variant="outlined"
       />
-      <TextField
-        error={errors?.image ? true : false}
-        helperText={errors.image ? errors.image.message : " "}
-        sx={{
-          "& .MuiInputLabel-root.Mui-focused": {
-            color: !errors?.image && "#000",
-          },
-          "& .MuiOutlinedInput-root.Mui-focused .MuiOutlinedInput-notchedOutline":
-            {
-              borderColor: !errors?.image && "#000",
-            },
-        }}
-        label="Upload Image"
-        {...register("image", {
-          required: { value: true, message: "Image Is Required+" },
-        })}
-        type="file"
-        InputLabelProps={{
-          shrink: true,
-        }}
-        InputProps={{
-          inputProps: {
-            accept: "image/*",
-          },
-        }}
-      />
+     
       <Button
         type="submit"
         sx={{

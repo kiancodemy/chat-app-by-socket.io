@@ -5,7 +5,7 @@ const { Schema } = mongoose;
 const usermodel = new Schema(
   {
     name: { type: String, require: true },
-    email: { type: String, require: true },
+    email: { type: String, require: true, unique: true },
     password: { type: String, require: true },
 
     image: {
@@ -18,11 +18,10 @@ const usermodel = new Schema(
   { timestamps: true }
 );
 usermodel.pre("save", async function (next) {
-  if (!this.isModified("password")) {
-    return next();
-  }
-
   try {
+    if (!this.isModified("password")) {
+      return next();
+    }
     const salt = await bcrypt.genSalt(10);
 
     const hashedPassword = await bcrypt.hash(this.password, salt);
@@ -33,4 +32,4 @@ usermodel.pre("save", async function (next) {
     return next(error);
   }
 });
-export const user = mongoose.model("User", usermodel);
+export const User = mongoose.model("User", usermodel);

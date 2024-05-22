@@ -13,22 +13,24 @@ function Home() {
     setValue(newValue);
   };
   return (
-    <Container maxWidth="xs">
-      <Box
+    <Container maxWidth="xs" sx={{ marginY: "20px" }}>
+      <Typography
         sx={{
-          marginBottom: "15px",
+          marginBottom: "10px",
           backgroundColor: "white",
           padding: "15px",
           display: "flex",
           borderRadius: "10px",
           justifyContent: "center",
           alignItems: "center",
+          textTransform: "uppercase",
         }}
       >
-        <Typography sx={{ textTransform: "uppercase" }}>Log in </Typography>
-      </Box>
+        Log in
+      </Typography>
+
       <Box
-        sx={{ padding: "10px", backgroundColor: "white", borderRadius: "10px" }}
+        sx={{ padding: "20px", backgroundColor: "white", borderRadius: "10px" }}
       >
         <TabContext value={value}>
           <Box>
@@ -47,10 +49,11 @@ function Home() {
                   textTransform: "capitalize",
                   fontWeight: "bold",
                   borderRadius: "25px",
+                  fontSize: "14px",
 
                   "&.Mui-selected": {
                     backgroundColor: "#008DDA", // Set your desired selected tab background color
-                    color: "black", // Set your desired selected tab label color
+                    color: "white", // Set your desired selected tab label color
                   },
                 }}
                 label="login"
@@ -63,10 +66,12 @@ function Home() {
                   fontWeight: "bold",
                   width: "50%",
 
+                  fontSize: "14px",
+
                   "&.Mui-selected": {
                     borderBottom: "none",
                     backgroundColor: "#008DDA", // Set your desired selected tab background color
-                    color: "black", // Set your desired selected tab label color
+                    color: "white", // Set your desired selected tab label color
                   },
                 }}
                 label="sig up"

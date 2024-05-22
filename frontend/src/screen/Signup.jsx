@@ -8,6 +8,10 @@ import {
   TextField,
   Stack,
 } from "@mui/material";
+import { useRegisterMutation } from "../slices/Userapi";
+import { setcredential } from "../slices/userslice";
+import { useNavigate } from "react-router-dom";
+import { useDispatch } from "react-redux";
 import Visibility from "@mui/icons-material/Visibility";
 import VisibilityOff from "@mui/icons-material/VisibilityOff";
 import { toast } from "react-toastify";
@@ -20,34 +24,47 @@ function Signup() {
 
   const handleClickShowPassword = () => setShowPassword((show) => !show);
   const handleClickShowPasswords = () => setShowPasswords((show) => !show);
-
+  const [Adduser, { isLoading }] = useRegisterMutation();
   const {
     register,
     handleSubmit,
 
     formState: { errors, isValid, isSubmitting },
   } = useForm();
+  //image uploader
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
 
-  const onSubmit = (data) => {
-    if (password !== confirmpassword) {
-      toast.error("Passwotd and Confirm password shoud be same", {
+  const onSubmit = async (data) => {
+    try {
+      if (data.password !== data.confirmpassword) {
+        toast.error("Passwotd and Confirm password shoud be same", {
+          position: "top-right",
+          autoClose: 2000,
+        });
+        return true;
+      }
+      const response = await Adduser(data).unwrap();
+      dispatch(setcredential(response));
+
+      toast.success("Success Notification !", {
+        position: "top-right",
+        autoClose: 1500,
+      });
+      navigate("/chat");
+    } catch (err) {
+      toast.error(err?.data?.message, {
         position: "top-right",
         autoClose: 2000,
       });
-      return;
     }
-
-    toast.success("Success Notification !", {
-      position: "top-right",
-      autoClose: 1500,
-    });
   };
   return (
     <Stack
       onSubmit={handleSubmit(onSubmit)}
       component="form"
-      sx={{ paddingY: "1px" }}
       direction="column"
+      gap={1}
     >
       <TextField
         error={errors?.name ? true : false}
@@ -73,6 +90,10 @@ function Signup() {
         helperText={errors.email ? errors.email.message : " "}
         {...register("email", {
           required: { value: true, message: "Email Is Required" },
+          pattern: {
+            value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i,
+            message: "Invalid email address",
+          },
         })}
         sx={{
           "& .MuiInputLabel-root.Mui-focused": {
@@ -147,7 +168,7 @@ function Signup() {
         label="Confirm Password"
         variant="outlined"
       />
-      <TextField
+      {/*<TextField
         error={errors?.image ? true : false}
         helperText={errors.image ? errors.image.message : " "}
         sx={{
@@ -172,7 +193,7 @@ function Signup() {
             accept: "image/*",
           },
         }}
-      />
+      />*/}
       <Button
         type="submit"
         sx={{

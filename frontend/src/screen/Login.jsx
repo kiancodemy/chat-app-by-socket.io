@@ -1,14 +1,17 @@
 import {
-  Container,
-  Box,
   InputAdornment,
-  Typography,
   Button,
   IconButton,
   TextField,
   Stack,
 } from "@mui/material";
 import { toast } from "react-toastify";
+import { setcredential } from "../slices/userslice";
+import { useNavigate } from "react-router-dom";
+import { useDispatch } from "react-redux";
+
+import Loading from "../components/Loading";
+import { useLoginMutation } from "../slices/Userapi";
 import Visibility from "@mui/icons-material/Visibility";
 import VisibilityOff from "@mui/icons-material/VisibilityOff";
 
@@ -17,6 +20,9 @@ import { useForm } from "react-hook-form";
 
 function Login() {
   const [showPassword, setShowPassword] = useState(false);
+  const [log, { isLoading: isUpdating }] = useLoginMutation();
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
 
   const handleClickShowPassword = () => setShowPassword((show) => !show);
 
@@ -25,16 +31,48 @@ function Login() {
     handleSubmit,
     reset,
 
-    formState: { errors, isValid, isSubmitting },
+    formState: { errors, isSubmitting },
   } = useForm();
+  const credit = async () => {
+    try {
+      const response = await log({
+        email: "credit@gmail.com",
+        password: "123",
+      }).unwrap();
 
-  const onSubmit = (data) => {
-    console.log(data.image[0]);
+      dispatch(setcredential(response));
 
-    toast.success("Success Notification !", {
-      position: "top-right",
-      autoClose: 1500,
-    });
+      toast.success("Loged in Successfully !", {
+        position: "top-right",
+        autoClose: 2000,
+      });
+      navigate("/chat");
+    } catch (err) {
+      toast.error("The mistake has happned", {
+        position: "top-right",
+        autoClose: 2000,
+      });
+    }
+  };
+
+  const onSubmit = async (data) => {
+    try {
+      const response = await log(data).unwrap();
+
+      dispatch(setcredential(response));
+
+      toast.success("Loged in Successfully !", {
+        position: "top-right",
+        autoClose: 2000,
+      });
+      navigate("/chat");
+    } catch (err) {
+      reset();
+      toast.success(err?.data?.message, {
+        position: "top-right",
+        autoClose: 1500,
+      });
+    }
   };
   return (
     <Stack
@@ -92,7 +130,7 @@ function Login() {
         label="Password"
         variant="outlined"
       />
-     
+
       <Button
         type="submit"
         sx={{
@@ -105,6 +143,8 @@ function Login() {
         login
       </Button>
       <Button
+        onClick={credit}
+        disabled={isSubmitting}
         sx={{
           textTransform: "capitalize",
           color: "white",

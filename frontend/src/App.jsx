@@ -3,7 +3,7 @@ import Home from "./screen/Home";
 import { Box } from "@mui/material";
 import { ToastContainer, Slide } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-
+import Private from "./components/Private";
 import Chat from "./screen/Chat";
 
 function App() {
@@ -12,13 +12,15 @@ function App() {
       sx={{
         minHeight: "100vh",
         display: "flex",
-        alignItems: "center",
+        alignItems: "start",
 
         backgroundImage: "url(/1.jpg)",
         backgroundSize: "cover",
       }}
     >
       <Routes>
+        <Route path="/" element={<Home />} />
+
         <Route path="/" element={<Home />} />
         <Route path="/chat" element={<Chat />} />
       </Routes>

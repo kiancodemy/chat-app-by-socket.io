@@ -7,6 +7,7 @@ export const acceschat = async (req, res) => {
     if (!id) {
       throw new Error("there is no user id!!!");
     }
+
     const find = await Chat.find({
       isGroup: false,
       $and: [
@@ -40,7 +41,7 @@ export const acceschat = async (req, res) => {
   }
 };
 
-//fetch//
+////fetch////
 export const fetch = async (req, res) => {
   try {
     const query = Chat.find({
@@ -69,11 +70,11 @@ export const createGroup = async (req, res) => {
     if (!req.body.name || !req.body.users) {
       throw new Error("there is not information");
     }
-    let user = JSON.parse(req.body.users);
+    let user = req.body.users;
     if (user.length < 2) {
-      throw new Error("moer than two user is needed");
+      throw new Error("more than one user is needed");
     }
-    user.push(req.user);
+    user.push(req.user._id);
     const create = await Chat.create({
       chatName: req.body.name,
       isGroup: true,

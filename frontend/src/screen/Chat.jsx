@@ -20,14 +20,20 @@ function Chat() {
   return (
     <Container maxWidth="lg">
       <Navbar></Navbar>
-      {/*<Box sx={{ justifyContent: "space-between", display: "flex" }}>
-        <Box sx={{ flexBasis: "30%", backgroundColor: "#ddd" }}>
-          <Mychats></Mychats>
-        </Box>
-        <Box sx={{ flexBasis: "70%", backgroundColor: "#000" }}>
+      <Box
+        sx={{
+          justifyContent: "space-between",
+          display: "flex",
+          marginTop: "20px",
+          gap: "20px",
+        }}
+      >
+        <Mychats></Mychats>
+
+        {/*<Box sx={{ flexBasis: "70%", backgroundColor: "#000" }}>
           <Chatbox></Chatbox>
-        </Box>
-  </Box>*/}
+      </Box>*/}
+      </Box>
     </Container>
   );
 }

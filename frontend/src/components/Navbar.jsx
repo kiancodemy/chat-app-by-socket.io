@@ -3,38 +3,124 @@ import {
   Box,
   Typography,
   Tooltip,
+  Button,
   Avatar,
+  Drawer,
   MenuItem,
   Menu,
 } from "@mui/material";
+
+import UserItem from "./UserItem";
+import { selected } from "../slices/userslice";
+import { useAccesschatMutation } from "../slices/chatapi";
+import { useLogoutMutation, useAllusersQuery } from "../slices/Userapi";
+import { toast } from "react-toastify";
+import { cleardata } from "../slices/userslice";
+import Modal from "./Modal";
 import SearchIcon from "@mui/icons-material/Search";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import ArrowDropDownIcon from "@mui/icons-material/ArrowDropDown";
 import ArrowDropUpIcon from "@mui/icons-material/ArrowDropUp";
-import PersonIcon from "@mui/icons-material/Person";
-import { Link } from "react-router-dom";
-import { useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
+import { useSelector, useDispatch } from "react-redux";
 
 import NotificationsNoneIcon from "@mui/icons-material/NotificationsNone";
 function Navbar() {
+  const dispatch = useDispatch();
+  const navigagte = useNavigate();
   const [anchorEl, setAnchorEl] = useState(null);
-  const { userinfo } = useSelector((state) => state.auth);
 
-  const [open, setopen] = useState(true);
+
+  const { userinfo } = useSelector((state) => state.auth);
+  //logout
+
+  const [data, { isLoading: isupdatin }] = useLogoutMutation();
+  //access chat//
+
+  ///open close states//
+
+  const [open, setopen] = useState(false);
+  const [opendrawer, setopendrawer] = useState(false);
+  const [openmodal, setopenmodal] = useState(false);
+  const [search, setsearch] = useState("");
+
+  const [find, setfind] = useState("");
+  // all users//
+  const { data: info, isloading } = useAllusersQuery(find);
+  const [datas] = useAccesschatMutation();
+  const access = async (id) => {
+    try {
+      const create = await datas(id).unwrap();
+      await dispatch(selected(create));
+      setopendrawer(false);
+      toast.success("cretee in Successfully !", {
+        position: "top-right",
+        autoClose: 2000,
+      });
+    } catch (err) {
+      toast.error(err.data.message, {
+        position: "top-right",
+        autoClose: 2000,
+      });
+    }
+  };
+
+  const findOperation = async () => {
+    try {
+      setfind(search);
+    } catch (err) {
+      toast.error(err.data.message, {
+        position: "top-right",
+        autoClose: 2000,
+      });
+    }
+  };
+  //open close handler//
+  const modalcloser = () => {
+    setopenmodal(false);
+  };
+
+  const handleClose = () => {
+    setAnchorEl(null);
+    setopen(false);
+  };
 
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget);
 
     setopen(true);
   };
-  const handleClose = () => {
+
+  const closeprofile = () => {
     setAnchorEl(null);
     setopen(false);
+    setopenmodal(true);
   };
+  const closelogout = async () => {
+    try {
+      await data("ss");
+      dispatch(cleardata());
+
+      setAnchorEl(null);
+      setopen(false);
+      navigagte("/");
+
+      toast.success("Logedout in Successfully !", {
+        position: "top-right",
+        autoClose: 2000,
+      });
+    } catch (err) {
+      toast.error(err.data.message, {
+        position: "top-right",
+        autoClose: 2000,
+      });
+    }
+  };
+
+  ///main function///
 
   return (
     <Box
-      role="presentation"
       sx={{
         display: "flex",
         padding: "15px",
@@ -47,6 +133,7 @@ function Navbar() {
     >
       <Tooltip placement="right-end" title="Search User to chat">
         <Box
+          onClick={() => setopendrawer(true)}
           sx={{
             display: "flex",
             borderRadius: "10px",
@@ -106,12 +193,12 @@ function Navbar() {
               sx={{
                 backgroundColor: "#5AB2FF",
 
-                width: "30px",
-                height: "30px",
+                width: { xs: "25px", md: "30px" },
+                height: { xs: "25px", md: "30px" },
               }}
               variant="rounded"
             >
-              {userinfo.name}
+              <Typography sx={{ fontSize: "14px" }}>{userinfo.name}</Typography>
             </Avatar>
             {open ? (
               <ArrowDropDownIcon></ArrowDropDownIcon>
@@ -120,20 +207,87 @@ function Navbar() {
             )}
           </Box>
         </Tooltip>
+        <Menu
+          id="basic-menu"
+          anchorEl={anchorEl}
+          open={open}
+          onClose={handleClose}
+          MenuListProps={{
+            "aria-labelledby": "basic-button",
+          }}
+        >
+          <MenuItem onClick={closeprofile}>Profile</MenuItem>
+
+          <MenuItem onClick={closelogout}>Logout</MenuItem>
+        </Menu>
       </Box>
-      <Menu
-        id="basic-menu"
-        anchorEl={anchorEl}
-        open={open}
-        onClose={handleClose}
-        MenuListProps={{
-          "aria-labelledby": "basic-button",
+
+      {openmodal && <Modal userinfo={userinfo} closer={modalcloser}></Modal>}
+      <Drawer
+        open={opendrawer}
+        onClose={() => {
+          setopendrawer(false);
         }}
       >
-        <MenuItem onClick={handleClose}>Profile</MenuItem>
+        <Box
+          sx={{
+            display: "flex",
+            flexDirection: "column",
+            gap: "15px",
+            padding: "15px",
+          }}
+        >
+          <Typography
+            sx={{
+              textTransform: "capitalize",
+              fontWeight: "bold",
+              paddingY: "5px",
+              borderBottom: "2px solid #ddd",
+            }}
+          >
+            Search users
+          </Typography>
+          <Box sx={{ display: "flex", gap: "5px" }}>
+            <input
+              placeholder="search for user"
+              value={search}
+              onChange={(e) => setsearch(e.target.value)}
+              type="text"
+            />
+            <Button
+              sx={{
+                backgroundColor: "#008DDA",
+                color: "white",
+                padding: "5px 15px",
 
-        <MenuItem onClick={handleClose}>Logout</MenuItem>
-      </Menu>
+                "&:hover": {
+                  backgroundColor: "#000",
+                  color: "white",
+                },
+              }}
+              onClick={findOperation}
+            >
+              Go
+            </Button>
+          </Box>
+
+          <Box sx={{ display: "flex", flexDirection: "column", gap: "10px" }}>
+            {isloading ? (
+              <span>loading</span>
+            ) : (
+              info?.map((item) => {
+                return (
+                  <UserItem
+                    key={item._id}
+                    items={item}
+                    access={access}
+                  ></UserItem>
+                );
+              })
+            )}
+          </Box>
+        </Box>
+      </Drawer>
     </Box>
   );
 }

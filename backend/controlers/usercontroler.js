@@ -72,11 +72,24 @@ export const getall = async (req, res) => {
         }
       : {};
 
-    const find = await User.find(keyword).find({ _id: { $ne: req.user._id } });
+    const find = await User.find(keyword)
+      .find({ _id: { $ne: req.user._id } })
+      .select("-password");
     if (!find) {
       throw new Error("no user found");
     }
     res.status(201).json(find);
+  } catch (err) {
+    res.status(404).json({
+      message: err.message,
+    });
+  }
+};
+
+export const logout = async (req, res) => {
+  try {
+    await res.cookie("jwt", "");
+    res.status(201).json({ message: "successfully logout" });
   } catch (err) {
     res.status(404).json({
       message: err.message,

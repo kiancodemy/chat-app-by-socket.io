@@ -2,6 +2,9 @@ import { Myapi } from "./Apislice";
 
 const apiregister = Myapi.injectEndpoints({
   endpoints: (builder) => ({
+    Allusers: builder.query({
+      query: (data) => `/users/all?search=${data}`,
+    }),
     Register: builder.mutation({
       query: (data) => ({
         url: `/users/register`,
@@ -17,7 +20,21 @@ const apiregister = Myapi.injectEndpoints({
         body: data,
       }),
     }),
+
+    Logout: builder.mutation({
+      query: (data) => ({
+        url: `/users/logout`,
+        method: "POST",
+
+        body: data,
+      }),
+    }),
   }),
 });
 
-export const { useRegisterMutation, useLoginMutation } = apiregister;
+export const {
+  useRegisterMutation,
+  useLoginMutation,
+  useLogoutMutation,
+  useAllusersQuery,
+} = apiregister;

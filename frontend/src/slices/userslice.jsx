@@ -14,9 +14,16 @@ export const userSlice = createSlice({
       state.userinfo = actions.payload;
       localStorage.setItem("userinfo", JSON.stringify(actions.payload));
     },
+    cleardata: (state, action) => {
+      state.userinfo = null;
+      localStorage.removeItem("userinfo");
+    },
+    selected: (state, action) => {
+      state.selected = action.payload;
+    },
   },
 });
 
-export const { setcredential } = userSlice.actions;
+export const { setcredential, cleardata, selected } = userSlice.actions;
 
 export default userSlice.reducer;

@@ -5,9 +5,18 @@ import TabList from "@mui/lab/TabList";
 import Login from "./Login";
 import Signup from "./Signup";
 import TabPanel from "@mui/lab/TabPanel";
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
 function Home() {
+  const navigate = useNavigate();
   const [value, setValue] = useState("1");
+  const { userinfo } = useSelector((state) => state.auth);
+  useEffect(() => {
+    if (userinfo) {
+      navigate("/chat");
+    }
+  }, [userinfo]);
 
   const handleChange = (event, newValue) => {
     setValue(newValue);

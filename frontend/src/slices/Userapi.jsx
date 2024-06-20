@@ -3,11 +3,11 @@ import { Myapi } from "./Apislice";
 const apiregister = Myapi.injectEndpoints({
   endpoints: (builder) => ({
     Allusers: builder.query({
-      query: (data) => `/users/all?search=${data}`,
+      query: (data) => `users/all?search=${data}`,
     }),
     Register: builder.mutation({
       query: (data) => ({
-        url: `/users/register`,
+        url: `users/register`,
         method: "POST",
 
         body: data,
@@ -15,7 +15,7 @@ const apiregister = Myapi.injectEndpoints({
     }),
     Login: builder.mutation({
       query: (data) => ({
-        url: `/users/login`,
+        url: `users/login`,
         method: "POST",
         body: data,
       }),
@@ -23,7 +23,7 @@ const apiregister = Myapi.injectEndpoints({
 
     Logout: builder.mutation({
       query: (data) => ({
-        url: `/users/logout`,
+        url: `users/logout`,
         method: "POST",
 
         body: data,

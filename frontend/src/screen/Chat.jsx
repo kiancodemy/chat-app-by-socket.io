@@ -26,6 +26,7 @@ function Chat() {
           display: "flex",
           marginTop: "20px",
           gap: "20px",
+         
         }}
       >
         <Mychats></Mychats>

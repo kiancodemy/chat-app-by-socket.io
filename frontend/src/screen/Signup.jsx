@@ -1,8 +1,5 @@
 import {
-  Container,
-  Box,
   InputAdornment,
-  Typography,
   Button,
   IconButton,
   TextField,
@@ -24,16 +21,20 @@ function Signup() {
 
   const handleClickShowPassword = () => setShowPassword((show) => !show);
   const handleClickShowPasswords = () => setShowPasswords((show) => !show);
-  const [Adduser, { isLoading }] = useRegisterMutation();
+  const [Adduser] = useRegisterMutation();
+
+  //react hook form //
   const {
     register,
     handleSubmit,
 
-    formState: { errors, isValid, isSubmitting },
+    formState: { errors },
   } = useForm();
   //image uploader
   const dispatch = useDispatch();
   const navigate = useNavigate();
+
+  //function for submiting form //
 
   const onSubmit = async (data) => {
     try {
@@ -47,7 +48,7 @@ function Signup() {
       const response = await Adduser(data).unwrap();
       dispatch(setcredential(response));
 
-      toast.success("Success Notification !", {
+      toast.success("Signup Successfully", {
         position: "top-right",
         autoClose: 1500,
       });
@@ -133,7 +134,7 @@ function Signup() {
               borderColor: !errors?.password && "#000",
             },
         }}
-        id="pass"
+        id="password"
         label="Password"
         variant="outlined"
       />
@@ -164,7 +165,7 @@ function Signup() {
               borderColor: !errors?.confirmpassword && "#000",
             },
         }}
-        id="pass"
+        id="confiremd"
         label="Confirm Password"
         variant="outlined"
       />

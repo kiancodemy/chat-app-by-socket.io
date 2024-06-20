@@ -7,8 +7,9 @@ function UserItem({ items, access }) {
         borderRadius: "5px",
         cursor: "pointer",
         display: "flex",
+
         backgroundColor: "#eee",
-        padding: "8px",
+        padding: "10px",
         gap: "15px",
         alignitems: "center",
         "&:hover": { backgroundColor: "#008DDA", color: "white" },
@@ -16,7 +17,7 @@ function UserItem({ items, access }) {
       key={items._id}
     >
       <Avatar
-        sx={{ width: "30px", height: "30px" }}
+        sx={{ width: "40px", height: "40px", alignSelf: "center" }}
         src={items.image}
         alt={items.name}
       />

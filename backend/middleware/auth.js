@@ -14,6 +14,7 @@ export const protect = async (req, res, next) => {
       throw new Error("Log in please");
     }
     req.user = await User.findById(id).select("-password");
+    
 
     next();
   } catch (err) {

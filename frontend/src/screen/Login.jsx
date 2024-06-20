@@ -10,7 +10,6 @@ import { setcredential } from "../slices/userslice";
 import { useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
 
-import Loading from "../components/Loading";
 import { useLoginMutation } from "../slices/Userapi";
 import Visibility from "@mui/icons-material/Visibility";
 import VisibilityOff from "@mui/icons-material/VisibilityOff";
@@ -25,6 +24,7 @@ function Login() {
   const dispatch = useDispatch();
 
   const handleClickShowPassword = () => setShowPassword((show) => !show);
+  ///react-hooke form hander///
 
   const {
     register,
@@ -33,6 +33,8 @@ function Login() {
 
     formState: { errors, isSubmitting },
   } = useForm();
+
+  ///function for guests //
   const credit = async () => {
     try {
       const response = await log({
@@ -55,25 +57,29 @@ function Login() {
     }
   };
 
+  //function for submiting form //
+
   const onSubmit = async (data) => {
     try {
       const response = await log(data).unwrap();
 
       dispatch(setcredential(response));
 
-      toast.success("Loged in Successfully !", {
+      toast.success("Loged in Successfully", {
         position: "top-right",
         autoClose: 2000,
       });
       navigate("/chat");
     } catch (err) {
       reset();
-      toast.success(err?.data?.message, {
+      toast.error(err?.data?.message, {
         position: "top-right",
         autoClose: 1500,
       });
     }
   };
+
+  //main return process///
   return (
     <Stack
       onSubmit={handleSubmit(onSubmit)}

@@ -45,14 +45,13 @@ export const login = async (req, res) => {
     await res.cookie("jwt", token, {
       httpOnly: true,
       maxAge: 36000000,
-      secure: process.env.NODE_ENV !== "development",
+      secure: false,
     });
 
     res.status(200).json({
       _id: Users._id,
       name: Users.name,
       email: Users.email,
-      token,
     });
   } catch (err) {
     res.status(404).json({
@@ -88,7 +87,7 @@ export const getall = async (req, res) => {
 
 export const logout = async (req, res) => {
   try {
-    await res.cookie("jwt", "");
+    await res.cookie("jwt");
     res.status(201).json({ message: "successfully logout" });
   } catch (err) {
     res.status(404).json({

@@ -30,11 +30,10 @@ function Navbar() {
   const navigagte = useNavigate();
   const [anchorEl, setAnchorEl] = useState(null);
 
-
   const { userinfo } = useSelector((state) => state.auth);
   //logout
 
-  const [data, { isLoading: isupdatin }] = useLogoutMutation();
+  const [updater] = useLogoutMutation();
   //access chat//
 
   ///open close states//
@@ -48,6 +47,7 @@ function Navbar() {
   // all users//
   const { data: info, isloading } = useAllusersQuery(find);
   const [datas] = useAccesschatMutation();
+
   const access = async (id) => {
     try {
       const create = await datas(id).unwrap();
@@ -65,8 +65,16 @@ function Navbar() {
     }
   };
 
-  const findOperation = async () => {
+  ///function for findinig users///
+
+  const findusers = async () => {
     try {
+      if (!search) {
+        toast.error("You Have Not Searchede Yet!!", {
+          position: "top-right",
+          autoClose: 2000,
+        });
+      }
       setfind(search);
     } catch (err) {
       toast.error(err.data.message, {
@@ -96,21 +104,23 @@ function Navbar() {
     setopen(false);
     setopenmodal(true);
   };
+
+  //logout function //
   const closelogout = async () => {
     try {
-      await data("ss");
+      await updater();
       dispatch(cleardata());
 
       setAnchorEl(null);
       setopen(false);
       navigagte("/");
 
-      toast.success("Logedout in Successfully !", {
+      toast.success("Loged out Successfully !", {
         position: "top-right",
         autoClose: 2000,
       });
     } catch (err) {
-      toast.error(err.data.message, {
+      toast.error(err?.data?.message, {
         position: "top-right",
         autoClose: 2000,
       });
@@ -123,10 +133,11 @@ function Navbar() {
     <Box
       sx={{
         display: "flex",
+
         padding: "15px",
         justifyContent: "space-between",
         alignItems: "center",
-        borderRadius: "10px",
+        borderRadius: "5px",
         backgroundColor: "white",
         marginTop: "10px",
       }}
@@ -160,9 +171,7 @@ function Navbar() {
           </Typography>
         </Box>
       </Tooltip>
-      <Typography sx={{ display: { xs: "none", md: "block" } }} variant="h5">
-        talk a tive
-      </Typography>
+
       <Box sx={{ display: "flex", gap: "5px", alignItems: "center" }}>
         <Tooltip placement="top" title="notification">
           <IconButton>
@@ -178,32 +187,32 @@ function Navbar() {
           <Box
             onClick={handleClick}
             sx={{
-              backgroundColor: "#eee",
+              backgroundColor: "#008DDA",
+
               display: "flex",
               alignItems: "center",
-              paddingX: "20px",
-              paddingY: "5px",
-              borderRadius: "10px",
+              padding: "10px",
+
+              borderRadius: "5px",
 
               cursor: "pointer",
-              "&:hover": { backgroundColor: "#ddd" },
+              "&:hover": { backgroundColor: "#008D" },
             }}
           >
-            <Avatar
+            <Typography
               sx={{
-                backgroundColor: "#5AB2FF",
-
-                width: { xs: "25px", md: "30px" },
-                height: { xs: "25px", md: "30px" },
+                color: "white",
+                padding: "2px 10px",
+                fontSize: { md: "18px", xs: "14px" },
               }}
-              variant="rounded"
             >
-              <Typography sx={{ fontSize: "14px" }}>{userinfo.name}</Typography>
-            </Avatar>
+              {userinfo.name}
+            </Typography>
+
             {open ? (
-              <ArrowDropDownIcon></ArrowDropDownIcon>
+              <ArrowDropDownIcon sx={{ color: "white" }}></ArrowDropDownIcon>
             ) : (
-              <ArrowDropUpIcon></ArrowDropUpIcon>
+              <ArrowDropUpIcon sx={{ color: "white" }}></ArrowDropUpIcon>
             )}
           </Box>
         </Tooltip>
@@ -265,7 +274,7 @@ function Navbar() {
                   color: "white",
                 },
               }}
-              onClick={findOperation}
+              onClick={findusers}
             >
               Go
             </Button>
@@ -273,17 +282,20 @@ function Navbar() {
 
           <Box sx={{ display: "flex", flexDirection: "column", gap: "10px" }}>
             {isloading ? (
-              <span>loading</span>
+              <Typography
+                variant="h4"
+                sx={{ textTransform: "capitalize", marginTop: "20px" }}
+              >
+                loading .....
+              </Typography>
             ) : (
-              info?.map((item) => {
-                return (
-                  <UserItem
-                    key={item._id}
-                    items={item}
-                    access={access}
-                  ></UserItem>
-                );
-              })
+              info?.map((item) => (
+                <UserItem
+                  key={item._id}
+                  items={item}
+                  access={access}
+                ></UserItem>
+              ))
             )}
           </Box>
         </Box>

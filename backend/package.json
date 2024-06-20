@@ -5,8 +5,7 @@
   "description": "",
   "main": "server.js",
   "scripts": {
-    "start": "nodemon backend/server.js",
-    "both": "concurrently \"nodemon backend/server.js\" \"npm --prefix frontend run dev\""
+    "start": "nodemon server.js"
   },
   "author": "kian",
   "license": "ISC",

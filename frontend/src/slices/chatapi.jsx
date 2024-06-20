@@ -6,6 +6,7 @@ const apiregister = Myapi.injectEndpoints({
       query: (data) => ({
         url: `chats`,
         method: "POST",
+        credentials: "include",
 
         body: data,
       }),
@@ -13,12 +14,14 @@ const apiregister = Myapi.injectEndpoints({
     }),
     Allchats: builder.query({
       query: (data) => "chats",
+      credentials: "include",
       providesTags: ["all"],
     }),
     Creategroup: builder.mutation({
       query: (data) => ({
         url: `chats/group`,
         method: "POST",
+        credentials: "include",
         body: data,
       }),
       invalidatesTags: ["all"],

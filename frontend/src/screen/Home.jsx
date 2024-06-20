@@ -1,4 +1,4 @@
-import { Container, Box, Typography, Button, TextField } from "@mui/material";
+import { Container, Box, Typography } from "@mui/material";
 import Tab from "@mui/material/Tab";
 import TabContext from "@mui/lab/TabContext";
 import TabList from "@mui/lab/TabList";
@@ -6,12 +6,14 @@ import Login from "./Login";
 import Signup from "./Signup";
 import TabPanel from "@mui/lab/TabPanel";
 import { useState, useEffect } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 function Home() {
   const navigate = useNavigate();
   const [value, setValue] = useState("1");
   const { userinfo } = useSelector((state) => state.auth);
+
+  // function for pre logged users in to page//
   useEffect(() => {
     if (userinfo) {
       navigate("/chat");
@@ -22,24 +24,13 @@ function Home() {
     setValue(newValue);
   };
   return (
-    <Container maxWidth="xs" sx={{ marginY: "20px" }}>
-      <Typography
-        sx={{
-          marginBottom: "10px",
-          backgroundColor: "white",
-          padding: "15px",
-          display: "flex",
-          borderRadius: "10px",
-          justifyContent: "center",
-          alignItems: "center",
-          textTransform: "uppercase",
-        }}
-      >
-        Log in
-      </Typography>
-
+    <Container maxWidth="xs" sx={{ marginTop: "20px", alignSelf: "center" }}>
       <Box
-        sx={{ padding: "20px", backgroundColor: "white", borderRadius: "10px" }}
+        sx={{
+          padding: "20px",
+          backgroundColor: "white",
+          borderRadius: "10px",
+        }}
       >
         <TabContext value={value}>
           <Box>

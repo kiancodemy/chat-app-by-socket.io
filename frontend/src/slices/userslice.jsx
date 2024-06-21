@@ -21,9 +21,12 @@ export const userSlice = createSlice({
     selected: (state, action) => {
       state.selected = action.payload;
     },
+    setter: (state) => {
+      state.selected = null;
+    },
   },
 });
 
-export const { setcredential, cleardata, selected } = userSlice.actions;
+export const { setcredential, cleardata, selected, setter } = userSlice.actions;
 
 export default userSlice.reducer;

@@ -1,9 +1,10 @@
 import { Box, Typography, Button, Menu } from "@mui/material";
+import React from "react";
 function Modal({ userinfo, closer }) {
   return (
     <Box
       sx={{
-        position: "absolute",
+        position: "fixed",
         display: "flex",
         flexDirection: "column",
         gap: "10px",

@@ -11,14 +11,14 @@ import {
 } from "@mui/material";
 
 import UserItem from "./UserItem";
-import { selected } from "../slices/userslice";
+
 import { useAccesschatMutation } from "../slices/chatapi";
 import { useLogoutMutation, useAllusersQuery } from "../slices/Userapi";
 import { toast } from "react-toastify";
 import { cleardata } from "../slices/userslice";
 import Modal from "./Modal";
 import SearchIcon from "@mui/icons-material/Search";
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import ArrowDropDownIcon from "@mui/icons-material/ArrowDropDown";
 import ArrowDropUpIcon from "@mui/icons-material/ArrowDropUp";
 import { useNavigate } from "react-router-dom";
@@ -51,7 +51,7 @@ function Navbar() {
   const access = async (id) => {
     try {
       const create = await datas(id).unwrap();
-      await dispatch(selected(create));
+
       setopendrawer(false);
       toast.success("cretee in Successfully !", {
         position: "top-right",

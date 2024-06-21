@@ -2,13 +2,16 @@ import {
   Box,
   Typography,
   Button,
+  FormControl,
+  InputLabel,
   TextField,
   Select,
+  Avatar,
   MenuItem,
 } from "@mui/material";
 import { toast } from "react-toastify";
-
-import { useState, useEffect } from "react";
+import React from "react";
+import { useState } from "react";
 import { useCreategroupMutation } from "../slices/chatapi";
 
 import { useAllusersQuery } from "../slices/Userapi";
@@ -33,31 +36,33 @@ function GroupModal({ closer }) {
         });
       }
       const create = await info({ name: name, users: personName }).unwrap();
-      toast.success("Added Successfully !", {
+      toast.success("Created Group Successfully !", {
         position: "top-right",
         autoClose: 2000,
       });
       closer();
     } catch (err) {
+      closer();
       toast.error(err.data.message, {
         position: "top-right",
         autoClose: 2000,
       });
-      closer();
     }
   };
   return (
     <Box
       sx={{
-        position: "absolute",
+        position: "fixed",
         display: "flex",
+        border: "5px solid #008DDA",
+
         flexDirection: "column",
-        gap: "10px",
+        gap: "25px",
         padding: "20px",
         top: "50%",
         left: "50%",
         transform: "translate(-50%, -50%)",
-        width: { xs: "250px", md: "400px" },
+        width: { xs: "250px", md: "350px" },
 
         borderRadius: "10px",
         textAlign: "center",
@@ -65,31 +70,52 @@ function GroupModal({ closer }) {
         backgroundColor: "white",
       }}
     >
+      <Typography sx={{ textTransform: "capitalize" }} variant="h4">
+        create group chat
+      </Typography>
       <TextField
+        size="small"
+        label="Choose Name"
         required
         value={name}
         onChange={(e) => setname(e.target.value)}
-        label="select name for group "
         sx={{
           backgroundColor: "#ddd",
           borderRadius: "5px",
-          padding: "2px",
+
           fontWeight: "bold",
         }}
       ></TextField>
-      <Select
-        multiple
-        value={personName}
-        onChange={handleChange}
-        sx={{ backgroundColor: "#ddd", borderRadius: "5px", padding: "2px" }}
+      <FormControl
+        InputLabelProps={{
+          shrink: true, // Prevent label from floating upwards
+        }}
       >
-        {!isLoading &&
-          data.map((item) => (
-            <MenuItem key={item._id} value={item._id}>
-              {item.name}
-            </MenuItem>
-          ))}
-      </Select>
+        <InputLabel
+          sx={{
+            textTransform: "capitalize",
+          }}
+          id="demo-multiple-name-labe"
+        >
+          select members
+        </InputLabel>
+        <Select
+          required
+          size="small"
+          multiple
+          value={personName}
+          onChange={handleChange}
+          sx={{ backgroundColor: "#ddd", borderRadius: "5px", padding: "2px" }}
+        >
+          {!isLoading &&
+            data?.map((item) => (
+              <MenuItem UserItem key={item._id} value={item._id}>
+                {item.name}
+              </MenuItem>
+            ))}
+        </Select>
+      </FormControl>
+
       <Box sx={{ display: "flex", justifyContent: "space-between" }}>
         <Button
           sx={{

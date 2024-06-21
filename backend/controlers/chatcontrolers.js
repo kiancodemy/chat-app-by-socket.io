@@ -135,15 +135,8 @@ export const addtogroup = async (req, res) => {
 };
 export const removegroup = async (req, res) => {
   try {
-    const { chatid, user } = req.body;
-    const find = await Chat.findByIdAndUpdate(
-      chatid,
+    const find = await Chat.findByIdAndDelete(req.body.id);
 
-      { $pull: { users: user } },
-      { new: true }
-    )
-      .populate("users", "-password")
-      .populate("groupAdmin", "-password");
     if (!find) {
       throw new Error("no user found ");
     }

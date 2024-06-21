@@ -1,6 +1,7 @@
 import { useEffect } from "react";
 import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
+
 import { Box, Container } from "@mui/material";
 import Mychats from "../components/Mychats";
 import Chatbox from "../components/Chatbox";
@@ -26,14 +27,11 @@ function Chat() {
           display: "flex",
           marginTop: "20px",
           gap: "20px",
-         
         }}
       >
         <Mychats></Mychats>
 
-        {/*<Box sx={{ flexBasis: "70%", backgroundColor: "#000" }}>
-          <Chatbox></Chatbox>
-      </Box>*/}
+        <Chatbox></Chatbox>
       </Box>
     </Container>
   );

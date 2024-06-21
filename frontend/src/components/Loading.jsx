@@ -19,7 +19,7 @@ function Loading() {
           fontWeight: "bold",
         }}
       >
-        loading
+        loading ...
       </Typography>
     </Stack>
   );

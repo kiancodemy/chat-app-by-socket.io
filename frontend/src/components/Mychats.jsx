@@ -1,14 +1,16 @@
 import { Box, Typography, Button } from "@mui/material";
 import { useAllchatsQuery } from "../slices/chatapi";
 import GroupModal from "./Groupmodal";
+
 import { useSelector, useDispatch } from "react-redux";
 import { selected } from "../slices/userslice";
 import { useState } from "react";
 function Mychats() {
-  const selectedd = useSelector((state) => state.auth.selected) || { id: 5 };
+  const selectedd = useSelector((state) => state.auth.selected);
   //const [selected, setselected] = useState({});
   const [opengroup, setopengroup] = useState(false);
   const dispatch = useDispatch();
+
   const { data, isloading } = useAllchatsQuery("s");
   const closer = () => {
     setopengroup(false);
@@ -17,9 +19,10 @@ function Mychats() {
   return (
     <Box
       sx={{
-        flexBasis: "30%",
+        flexBasis: { xs: "100%", md: "30%" },
+        display: { xs: selectedd ? "none" : "block", md: "block" },
         backgroundColor: "white",
-        padding: "10px",
+        padding: "20px",
         borderRadius: "5px",
       }}
     >
@@ -27,6 +30,7 @@ function Mychats() {
         <Box
           sx={{
             display: "flex",
+            padding: "2px 8px",
             alignItems: "center",
             justifyContent: "space-between",
           }}
@@ -34,9 +38,10 @@ function Mychats() {
           <Typography
             sx={{
               textTransform: "capitalize",
-              backgroundColor: "#ddd",
+              backgroundColor: "#aaa",
+              color: "white",
 
-              padding: "5px",
+              padding: "5px 10px",
               borderRadius: "5px",
             }}
           >
@@ -45,7 +50,8 @@ function Mychats() {
           <Button
             onClick={() => setopengroup(true)}
             sx={{
-              background: "#eee",
+              background: "#ddd",
+              padding: "5px 10px",
 
               color: "#000",
               fontWeight: "bold",
@@ -76,25 +82,29 @@ function Mychats() {
           <Box
             sx={{
               marginTop: "10px",
+
               display: "flex",
               flexDirection: "column",
-              gap: "8px",
+              gap: "10px",
             }}
           >
             {data?.map((item) => (
               <Box
+                key={item._id}
                 onClick={() => dispatch(selected(item))}
                 sx={{
                   backgroundColor:
-                    selectedd?._id === item._id ? "#5AB2FF" : "#ddd",
-                  color: selected._id === item._id ? "white" : "#000",
-                  padding: "5px",
+                    selectedd?._id === item._id ? "#488ecc" : "#ddd",
+
+                  padding: "15px 30px",
                   borderRadius: "5px",
                   cursor: "pointer",
                 }}
               >
-                <Typography>
-                  {item.isGroup ? item.chatName : item.users[0].name}
+                <Typography
+                  sx={{ color: selectedd?._id === item._id ? "#fff" : "#000" }}
+                >
+                  {item.isGroup ? item.chatName : item.users[1].name}
                 </Typography>
               </Box>
             ))}

@@ -15,5 +15,5 @@ router.route("/").get(protect, fetch);
 router.route("/group").post(protect, createGroup);
 router.route("/rename").put(protect, rename);
 router.route("/add").put(protect, addtogroup);
-router.route("/remove").put(protect, removegroup);
+router.route("/remove").delete(protect, removegroup);
 export default router;

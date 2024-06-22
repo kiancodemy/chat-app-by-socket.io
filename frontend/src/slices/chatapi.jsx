@@ -50,13 +50,29 @@ const apiregister = Myapi.injectEndpoints({
       }),
       invalidatesTags: ["all"],
     }),
+    Sendmessage: builder.mutation({
+      query: (data) => ({
+        url: `message`,
+        method: "POST",
+        credentials: "include",
+        body: data,
+      }),
+      invalidatesTags: ["all"],
+    }),
+    Allmessages: builder.query({
+      query: (data) => {
+        return { url: `message/${data}`, credentials: "include" };
+      },
+    }),
   }),
 });
 
 export const {
   useRenamegroupMutation,
   useAllchatsQuery,
+  useSendmessageMutation,
   useRemovegroupMutation,
   useAccesschatMutation,
   useCreategroupMutation,
+  useAllmessagesQuery,
 } = apiregister;

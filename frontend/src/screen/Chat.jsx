@@ -1,4 +1,5 @@
 import { useEffect } from "react";
+import React from "react";
 import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 
@@ -27,7 +28,8 @@ function Chat() {
           display: "flex",
 
           marginTop: "20px",
-          minHeight: "70vh",
+          height: "75vh",
+
           gap: "20px",
         }}
       >

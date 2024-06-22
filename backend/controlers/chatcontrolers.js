@@ -21,7 +21,7 @@ export const acceschat = async (req, res) => {
 
     const all = await User.populate(find, {
       path: "latestMessage.sender",
-      select: "name pic email",
+      select: "name image email",
     });
 
     if (all.length > 0) {
@@ -56,7 +56,7 @@ export const fetch = async (req, res) => {
 
     const all = await User.populate(query, {
       path: "latestMessage.sender",
-      select: "name pic email",
+      select: "name image email",
     });
 
     res.status(201).json(all);

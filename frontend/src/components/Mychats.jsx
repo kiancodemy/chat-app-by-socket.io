@@ -1,6 +1,7 @@
 import { Box, Typography, Button } from "@mui/material";
 import { useAllchatsQuery } from "../slices/chatapi";
 import GroupModal from "./Groupmodal";
+import disableScroll from "disable-scroll";
 
 import { useSelector, useDispatch } from "react-redux";
 import { selected } from "../slices/userslice";
@@ -48,7 +49,10 @@ function Mychats() {
             my chats
           </Typography>
           <Button
-            onClick={() => setopengroup(true)}
+            onClick={() => {
+              setopengroup(true);
+              disableScroll.on();
+            }}
             sx={{
               background: "#ddd",
               padding: "5px 10px",

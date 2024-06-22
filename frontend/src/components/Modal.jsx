@@ -1,4 +1,5 @@
 import { Box, Typography, Button, Menu } from "@mui/material";
+import disableScroll from "disable-scroll";
 import React from "react";
 function Modal({ userinfo, closer }) {
   return (
@@ -48,6 +49,7 @@ function Modal({ userinfo, closer }) {
             },
           }}
           onClick={() => {
+            disableScroll.off();
             closer();
           }}
         >

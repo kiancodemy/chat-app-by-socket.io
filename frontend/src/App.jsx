@@ -23,7 +23,7 @@ function App() {
 
         <Route path="/chat" element={<Chat />} />
       </Routes>
-      <ToastContainer transition={Slide}></ToastContainer>
+      <ToastContainer limit={2} transition={Slide}></ToastContainer>
     </Box>
   );
 }

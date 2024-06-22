@@ -17,13 +17,14 @@ import { useLogoutMutation, useAllusersQuery } from "../slices/Userapi";
 import { toast } from "react-toastify";
 import { cleardata } from "../slices/userslice";
 import Modal from "./Modal";
+import disableScroll from "disable-scroll";
 import SearchIcon from "@mui/icons-material/Search";
 import { useState } from "react";
 import ArrowDropDownIcon from "@mui/icons-material/ArrowDropDown";
 import ArrowDropUpIcon from "@mui/icons-material/ArrowDropUp";
 import { useNavigate } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
-
+import { setter } from "../slices/userslice";
 import NotificationsNoneIcon from "@mui/icons-material/NotificationsNone";
 function Navbar() {
   const dispatch = useDispatch();
@@ -103,6 +104,7 @@ function Navbar() {
     setAnchorEl(null);
     setopen(false);
     setopenmodal(true);
+    disableScroll.on();
   };
 
   //logout function //
@@ -110,6 +112,7 @@ function Navbar() {
     try {
       await updater();
       dispatch(cleardata());
+      dispatch(setter());
 
       setAnchorEl(null);
       setopen(false);

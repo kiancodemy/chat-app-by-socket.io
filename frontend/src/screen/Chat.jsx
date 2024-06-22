@@ -25,7 +25,9 @@ function Chat() {
         sx={{
           justifyContent: "space-between",
           display: "flex",
+
           marginTop: "20px",
+          minHeight: "70vh",
           gap: "20px",
         }}
       >

@@ -1,15 +1,20 @@
 import React from "react";
 import { Box, Typography, Button, TextField } from "@mui/material";
-
+import disableScroll from "disable-scroll";
 import { toast } from "react-toastify";
+import { nameUpdate } from "../slices/userslice";
 
 import { useState } from "react";
 import { setter } from "../slices/userslice";
-import { useRemovegroupMutation } from "../slices/chatapi";
+import {
+  useRemovegroupMutation,
+  useRenamegroupMutation,
+} from "../slices/chatapi";
 import { useDispatch, useSelector } from "react-redux";
 function GroupModal({ closer }) {
   const [name, setname] = useState("");
-  const [data, isLoading] = useRemovegroupMutation();
+  const [data] = useRemovegroupMutation();
+  const [info, { isLoading }] = useRenamegroupMutation();
 
   const dispatch = useDispatch();
   const select = useSelector((state) => state.auth.selected);
@@ -23,7 +28,7 @@ function GroupModal({ closer }) {
       closer();
       dispatch(setter());
 
-      toast.success("Update The Group", {
+      toast.success("Deleted Successfully", {
         position: "top-right",
         autoClose: 2000,
       });
@@ -37,18 +42,20 @@ function GroupModal({ closer }) {
   const updater = async () => {
     try {
       if (!update) {
-        toast.error("Name Field Is Empty", {
+        toast.error("Choose New Name", {
           position: "top-right",
           autoClose: 2000,
         });
         return true;
       }
+      await info({ id: select._id, name: update }).unwrap();
+      dispatch(nameUpdate(update));
+      closer();
 
       toast.success("Updated Successfully !", {
         position: "top-right",
         autoClose: 2000,
       });
-      closer();
     } catch (err) {}
   };
 
@@ -57,7 +64,7 @@ function GroupModal({ closer }) {
       sx={{
         position: "fixed",
         display: "flex",
-        border: "5px solid #008DDA",
+        border: "3px solid #008DDA",
 
         flexDirection: "column",
         gap: "25px",
@@ -73,10 +80,10 @@ function GroupModal({ closer }) {
         backgroundColor: "white",
       }}
     >
-      <Typography sx={{ textTransform: "capitalize" }} variant="h4">
+      <Typography sx={{ textTransform: "capitalize" }} variant={"h6"}>
         update group chat
       </Typography>
-      <Box sx={{ display: "flex", justifyContent: "space-between" }}>
+      <Box sx={{ display: "flex", justifyContent: "space-between", gap: 1 }}>
         <TextField
           size="small"
           label="Rename the group "
@@ -85,11 +92,13 @@ function GroupModal({ closer }) {
           sx={{
             backgroundColor: "#ddd",
             borderRadius: "5px",
+            flexGrow: 1,
 
             fontWeight: "bold",
           }}
         ></TextField>
         <Button
+          onClick={updater}
           sx={{
             "&:hover": {
               backgroundColor: "#000",
@@ -117,6 +126,7 @@ function GroupModal({ closer }) {
             },
           }}
           onClick={() => {
+            disableScroll.off();
             closer();
           }}
         >

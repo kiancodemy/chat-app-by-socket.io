@@ -9,7 +9,7 @@ const apiregister = Myapi.injectEndpoints({
         credentials: "include",
 
         body: data,
-        providesTags: ["access"],
+        providesTags: ["all"],
       }),
 
       invalidatesTags: ["all"],
@@ -29,12 +29,32 @@ const apiregister = Myapi.injectEndpoints({
         method: "DELETE",
         body: data,
       }),
-      invalidatesTags: ["all", "access"],
+      invalidatesTags: ["all"],
+    }),
+    Renamegroup: builder.mutation({
+      query: (data) => ({
+        url: "chats/rename",
+
+        method: "PUT",
+        credentials: "include",
+        body: data,
+      }),
+      invalidatesTags: ["all"],
+    }),
+    Creategroup: builder.mutation({
+      query: (data) => ({
+        url: `chats/group`,
+        method: "POST",
+        credentials: "include",
+        body: data,
+      }),
+      invalidatesTags: ["all"],
     }),
   }),
 });
 
 export const {
+  useRenamegroupMutation,
   useAllchatsQuery,
   useRemovegroupMutation,
   useAccesschatMutation,

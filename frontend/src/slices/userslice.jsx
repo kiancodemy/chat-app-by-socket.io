@@ -24,9 +24,13 @@ export const userSlice = createSlice({
     setter: (state) => {
       state.selected = null;
     },
+    nameUpdate: (state, action) => {
+      state.selected.chatName = action.payload;
+    },
   },
 });
 
-export const { setcredential, cleardata, selected, setter } = userSlice.actions;
+export const { setcredential, cleardata, selected, setter, nameUpdate } =
+  userSlice.actions;
 
 export default userSlice.reducer;

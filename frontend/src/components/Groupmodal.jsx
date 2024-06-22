@@ -10,7 +10,8 @@ import {
   MenuItem,
 } from "@mui/material";
 import { toast } from "react-toastify";
-import React from "react";
+import disableScroll from "disable-scroll";
+
 import { useState } from "react";
 import { useCreategroupMutation } from "../slices/chatapi";
 
@@ -130,6 +131,7 @@ function GroupModal({ closer }) {
           }}
           onClick={() => {
             closer();
+            disableScroll.off();
           }}
         >
           Close

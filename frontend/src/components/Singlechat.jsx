@@ -23,7 +23,7 @@ function Singlechat() {
     try {
       const send = await data({ content: neww, id: selector._id }).unwrap();
       setneww("");
-      console.log(send);
+      refetch();
     } catch (err) {
       toast.error("error occured !", {
         position: "top-right",
@@ -67,17 +67,18 @@ function Singlechat() {
       ) : (
         <Box
           sx={{
-            flexGrow: 1,
+            height: "60vh",
             backgroundColor: "#eee",
             borderRadius: "8px",
+
             display: "flex",
             padding: "5px 10px",
             gap: "5px",
             flexDirection: "column",
           }}
         >
-          <Scrolable data={info}></Scrolable>
-          <Box sx={{ display: "flex", gap: "15px" }}>
+          <Scrolable messages={info}></Scrolable>
+          <Box sx={{ display: "flex", gap: "15px", marginTop: "10px" }}>
             <TextField
               size="small"
               placeholder="Enter the message"

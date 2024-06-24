@@ -4,7 +4,7 @@ const apiregister = Myapi.injectEndpoints({
   endpoints: (builder) => ({
     Accesschat: builder.mutation({
       query: (data) => ({
-        url: `chats`,
+        url: `/chats`,
         method: "POST",
         credentials: "include",
 
@@ -16,7 +16,7 @@ const apiregister = Myapi.injectEndpoints({
     }),
     Allchats: builder.query({
       query: (data) => {
-        return { url: "chats", credentials: "include" };
+        return { url: "/chats", credentials: "include" };
       },
 
       providesTags: ["all"],
@@ -24,7 +24,7 @@ const apiregister = Myapi.injectEndpoints({
 
     Removegroup: builder.mutation({
       query: (data) => ({
-        url: "chats/remove",
+        url: "/chats/remove",
         credentials: "include",
         method: "DELETE",
         body: data,
@@ -33,7 +33,7 @@ const apiregister = Myapi.injectEndpoints({
     }),
     Renamegroup: builder.mutation({
       query: (data) => ({
-        url: "chats/rename",
+        url: "/chats/rename",
 
         method: "PUT",
         credentials: "include",
@@ -43,7 +43,7 @@ const apiregister = Myapi.injectEndpoints({
     }),
     Creategroup: builder.mutation({
       query: (data) => ({
-        url: `chats/group`,
+        url: `/chats/group`,
         method: "POST",
         credentials: "include",
         body: data,
@@ -61,7 +61,7 @@ const apiregister = Myapi.injectEndpoints({
     }),
     Allmessages: builder.query({
       query: (data) => {
-        return { url: `message/${data}`, credentials: "include" };
+        return { url: `/message/${data}`, credentials: "include" };
       },
     }),
   }),

@@ -4,12 +4,12 @@ const apiregister = Myapi.injectEndpoints({
   endpoints: (builder) => ({
     Allusers: builder.query({
       query: (data) => {
-        return { url: `users/all?search=${data}`, credentials: "include" };
+        return { url: `/users/all?search=${data}`, credentials: "include" };
       },
     }),
     Register: builder.mutation({
       query: (data) => ({
-        url: `users/register`,
+        url: `/users/register`,
         method: "POST",
         credentials: "include",
 
@@ -18,7 +18,7 @@ const apiregister = Myapi.injectEndpoints({
     }),
     Login: builder.mutation({
       query: (data) => ({
-        url: `users/login`,
+        url: `/users/login`,
         credentials: "include",
 
         method: "POST",
@@ -28,7 +28,7 @@ const apiregister = Myapi.injectEndpoints({
 
     Logout: builder.mutation({
       query: () => ({
-        url: `users/logout`,
+        url: `/users/logout`,
         credentials: "include",
         method: "POST",
       }),

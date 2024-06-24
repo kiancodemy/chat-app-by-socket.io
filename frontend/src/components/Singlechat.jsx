@@ -1,29 +1,55 @@
 import { Box, Typography, TextField, Button } from "@mui/material";
 import CircularProgress from "@mui/material/CircularProgress";
+import { io } from "socket.io-client";
 import { useSendmessageMutation, useAllmessagesQuery } from "../slices/chatapi";
-import { useSelector, useDispatch } from "react-redux";
+import { useSelector } from "react-redux";
 import { useState } from "react";
 import Scrolable from "./Scrolable";
+import { useEffect } from "react";
 import { toast } from "react-toastify";
+
 function Singlechat() {
   const selector = useSelector((state) => state.auth.selected);
+  const { _id } = useSelector((state) => state.auth.userinfo);
+
+  const socket = io(import.meta.env.VITE_SOME_KEY);
+  const { data: info, isLoading } = useAllmessagesQuery(
+    selector && selector._id
+  );
+
+  const [messages, setmessages] = useState([]);
+
+  useEffect(() => {
+    socket?.on("connect");
+    socket.emit("setup", _id);
+  }, []);
+  useEffect(() => {
+    socket.on("recieved", (data) => {
+      if (!selector || data.chat._id !== selector._id) {
+      }
+      setmessages([...messages, data]);
+    });
+  });
+
+  useEffect(() => {
+    setmessages(info);
+  }, [info]);
+
+  useEffect(() => {
+    if (selector) {
+      socket.emit("join chat", selector._id);
+    }
+  }, [info]);
 
   const [data] = useSendmessageMutation();
   const [neww, setneww] = useState("");
-  const {
-    data: info,
-    isLoading,
-    refetch,
-  } = useAllmessagesQuery(selector && selector._id);
 
-  if (info) {
-    console.log(info);
-  }
   const submithandler = async () => {
     try {
       const send = await data({ content: neww, id: selector._id }).unwrap();
+      await socket.emit("send message", send);
+      setmessages([...messages, send]);
       setneww("");
-      refetch();
     } catch (err) {
       toast.error("error occured !", {
         position: "top-right",
@@ -77,7 +103,7 @@ function Singlechat() {
             flexDirection: "column",
           }}
         >
-          <Scrolable messages={info}></Scrolable>
+          <Scrolable messages={messages}></Scrolable>
           <Box sx={{ display: "flex", gap: "15px", marginTop: "10px" }}>
             <TextField
               size="small"

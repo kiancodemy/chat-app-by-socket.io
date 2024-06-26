@@ -21,7 +21,6 @@ app.use(
 );
 const httpServer = createServer(app);
 const io = new Server(httpServer, {
-  pingTimeout: 20000,
   cors: {
     origin: "http://localhost:5173",
   },
@@ -29,14 +28,24 @@ const io = new Server(httpServer, {
 
 io.on("connection", (socket) => {
   socket.on("setup", (id) => {
+    console.log("setup" + id);
     socket.join(id);
+  });
+  socket.on("typing", (room) => {
+    socket.in(room).emit("typing");
+  });
+  socket.on("kir", (n) => {
+    socket.emit("kos", n * 3);
+  });
+  socket.on("stoptyping", (room) => {
+    socket.in(room).emit("stoptyping");
   });
 
   socket.on("join chat", (room) => {
+    console.log("join chat" + room);
     socket.join(room);
-    console.log(`user joined with id ${room}`);
   });
-  socket.on("send message", (newmessage) => {
+  socket.on("sendmessage", (newmessage) => {
     const chat = newmessage.chat;
     if (!chat.users) {
       console.log("no user");

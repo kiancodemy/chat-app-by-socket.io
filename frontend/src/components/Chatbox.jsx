@@ -50,6 +50,7 @@ function Chatbox() {
           marginBottom: "10px",
           justifyContent: "space-between",
           alignItems: "center",
+          height: "8vh",
 
           padding: "5px 10px",
         }}

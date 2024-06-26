@@ -4,7 +4,7 @@ import {
   Typography,
   Tooltip,
   Button,
-  Avatar,
+  Badge,
   Drawer,
   MenuItem,
   Menu,
@@ -15,7 +15,7 @@ import UserItem from "./UserItem";
 import { useAccesschatMutation } from "../slices/chatapi";
 import { useLogoutMutation, useAllusersQuery } from "../slices/Userapi";
 import { toast } from "react-toastify";
-import { cleardata } from "../slices/userslice";
+
 import Modal from "./Modal";
 import disableScroll from "disable-scroll";
 import SearchIcon from "@mui/icons-material/Search";
@@ -24,14 +24,16 @@ import ArrowDropDownIcon from "@mui/icons-material/ArrowDropDown";
 import ArrowDropUpIcon from "@mui/icons-material/ArrowDropUp";
 import { useNavigate } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
-import { setter } from "../slices/userslice";
+import { setter, filternotify, cleardata, selected } from "../slices/userslice";
+
 import NotificationsNoneIcon from "@mui/icons-material/NotificationsNone";
 function Navbar() {
   const dispatch = useDispatch();
   const navigagte = useNavigate();
+
   const [anchorEl, setAnchorEl] = useState(null);
 
-  const { userinfo } = useSelector((state) => state.auth);
+  const { userinfo, notification } = useSelector((state) => state.auth);
   //logout
 
   const [updater] = useLogoutMutation();
@@ -43,11 +45,27 @@ function Navbar() {
   const [opendrawer, setopendrawer] = useState(false);
   const [openmodal, setopenmodal] = useState(false);
   const [search, setsearch] = useState("");
+  const [anchorEll, setAnchorEll] = useState(null);
 
   const [find, setfind] = useState("");
   // all users//
   const { data: info, isloading } = useAllusersQuery(find);
   const [datas] = useAccesschatMutation();
+
+  //function for notification//
+  let openn = Boolean(anchorEll);
+  const notifyhandler = (event) => {
+    setAnchorEll(event.currentTarget);
+  };
+
+  //close notfification//
+  const closenotify = (item) => {
+    /*dispatch(filternotify(item));*/
+    console.log(item);
+    /*dispatch(selected(item));*/
+
+    setAnchorEll(null);
+  };
 
   const access = async (id) => {
     try {
@@ -177,10 +195,28 @@ function Navbar() {
 
       <Box sx={{ display: "flex", gap: "5px", alignItems: "center" }}>
         <Tooltip placement="top" title="notification">
-          <IconButton>
-            <NotificationsNoneIcon></NotificationsNoneIcon>
+          <IconButton onClick={notifyhandler}>
+            <Badge badgeContent={notification.length} color="primary">
+              <NotificationsNoneIcon></NotificationsNoneIcon>
+            </Badge>
           </IconButton>
         </Tooltip>
+        <Menu
+          id="basic-menu"
+          anchorEl={anchorEll}
+          open={openn}
+          onClose={closenotify}
+          MenuListProps={{
+            "aria-labelledby": "basic-button",
+          }}
+        >
+          {notification.length > 0 &&
+            notification.map((item) => (
+              <MenuItem key={item._id} onClick={() => closenotify(item)}>
+                {item.chat.isGroup ? item.chat.chatName : item.chat.users[1]}
+              </MenuItem>
+            ))}
+        </Menu>
 
         <Tooltip
           sx={{ "&:hover": { backgroundColor: "white" } }}

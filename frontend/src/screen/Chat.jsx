@@ -29,6 +29,7 @@ function Chat() {
 
           marginTop: "20px",
           height: "75vh",
+          overflowY: "scroll",
 
           gap: "20px",
         }}

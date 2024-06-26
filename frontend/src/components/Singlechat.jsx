@@ -1,54 +1,109 @@
 import { Box, Typography, TextField, Button } from "@mui/material";
 import CircularProgress from "@mui/material/CircularProgress";
-import { io } from "socket.io-client";
+import { socket } from "./socket";
 import { useSendmessageMutation, useAllmessagesQuery } from "../slices/chatapi";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import { useState } from "react";
 import Scrolable from "./Scrolable";
 import { useEffect } from "react";
+import { notify } from "../slices/userslice";
+import Lottie from "react-lottie";
+import * as animationData from "../animation/loading.json";
 import { toast } from "react-toastify";
 
 function Singlechat() {
-  const selector = useSelector((state) => state.auth.selected);
+  let selector = useSelector((state) => state.auth.selected);
   const { _id } = useSelector((state) => state.auth.userinfo);
+  const dispatch = useDispatch();
 
-  const socket = io(import.meta.env.VITE_SOME_KEY);
+  const [typing, settyping] = useState(false);
+  const [istyping, setistyping] = useState(false);
+  const [messages, setmessages] = useState([]);
+
+  const [neww, setneww] = useState("");
+
   const { data: info, isLoading } = useAllmessagesQuery(
     selector && selector._id
   );
 
-  const [messages, setmessages] = useState([]);
+  //// amimation from lotties for loading//
+  const defaultOptions = {
+    loop: true,
+    autoplay: true,
+    animationData: animationData,
+    rendererSettings: {
+      preserveAspectRatio: "xMidYMid slice",
+    },
+  };
+  const [data] = useSendmessageMutation();
 
+  ///handle typing
+  const typehandler = (e) => {
+    setneww(e.target.value);
+  };
+
+  //function for sending message
   useEffect(() => {
-    socket?.on("connect");
-    socket.emit("setup", _id);
-  }, []);
-  useEffect(() => {
-    socket.on("recieved", (data) => {
-      if (!selector || data.chat._id !== selector._id) {
-      }
-      setmessages([...messages, data]);
+    socket.on("connect", () => {
+      console.log("connected socket");
     });
   });
 
   useEffect(() => {
-    setmessages(info);
-  }, [info]);
+    socket.emit("setup", _id);
+  }, []);
 
   useEffect(() => {
     if (selector) {
       socket.emit("join chat", selector._id);
     }
+  }, [selector]);
+
+  useEffect(() => {
+    if (info) {
+      setmessages(info);
+    }
   }, [info]);
 
-  const [data] = useSendmessageMutation();
-  const [neww, setneww] = useState("");
+  useEffect(() => {
+    if (!typing && neww.length > 0 && selector?._id) {
+      settyping(true);
+      socket.emit("typing", selector?._id);
+    }
+
+    const timer = setTimeout(() => {
+      settyping(false);
+      socket.emit("stoptyping", selector?._id);
+    }, 2000);
+
+    return () => {
+      clearTimeout(timer);
+    };
+  }, [neww]);
+
+  useEffect(() => {
+    socket.on("recieved", (data) => {
+      if (data.chat?._id !== selector?._id) {
+        dispatch(notify(data));
+      } else {
+        setmessages([...messages, data]);
+      }
+    });
+    socket.on("typing", () => {
+      setistyping(true);
+    });
+    socket.on("stoptyping", () => {
+      setistyping(false);
+    });
+  });
 
   const submithandler = async () => {
     try {
       const send = await data({ content: neww, id: selector._id }).unwrap();
-      await socket.emit("send message", send);
+
+      socket.emit("sendmessage", send);
       setmessages([...messages, send]);
+
       setneww("");
     } catch (err) {
       toast.error("error occured !", {
@@ -93,23 +148,30 @@ function Singlechat() {
       ) : (
         <Box
           sx={{
-            height: "60vh",
+            height: "58vh",
+
             backgroundColor: "#eee",
             borderRadius: "8px",
 
             display: "flex",
-            padding: "5px 10px",
+            padding: "10px",
             gap: "5px",
             flexDirection: "column",
           }}
         >
           <Scrolable messages={messages}></Scrolable>
+          <Box sx={{ alignSelf: "start" }}>
+            {istyping && (
+              <Lottie height={40} width={80} options={defaultOptions}></Lottie>
+            )}
+          </Box>
+
           <Box sx={{ display: "flex", gap: "15px", marginTop: "10px" }}>
             <TextField
               size="small"
               placeholder="Enter the message"
               value={neww}
-              onChange={(e) => setneww(e.target.value)}
+              onChange={typehandler}
               sx={{ flexGrow: 1 }}
             ></TextField>
             <Button

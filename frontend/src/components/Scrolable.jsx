@@ -1,4 +1,4 @@
-import { Box, Typography, Avatar, Tooltip } from "@mui/material";
+import { Box, Avatar, Tooltip } from "@mui/material";
 
 import { useSelector } from "react-redux";
 import {
@@ -15,7 +15,7 @@ function Scrolable({ messages }) {
     <ScrollableFeed>
       {messages &&
         messages.map((m, i) => (
-          <Box sx={{ display: "flex" }} key={m._id}>
+          <Box sx={{ display: "flex" }} key={m?._id}>
             {(isSameSender(messages, m, i, id) ||
               isLastMessage(messages, i, id)) && (
               <Tooltip arrow title={m.sender.name} placement="bottom-start">

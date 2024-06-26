@@ -1,6 +1,7 @@
 import { createSlice } from "@reduxjs/toolkit";
 
 const initialState = {
+  notification: [],
   userinfo: localStorage.getItem("userinfo")
     ? JSON.parse(localStorage.getItem("userinfo"))
     : null,
@@ -27,10 +28,30 @@ export const userSlice = createSlice({
     nameUpdate: (state, action) => {
       state.selected.chatName = action.payload;
     },
+    notify: (state, action) => {
+      const find = state.notification.find(
+        (item) => item.chat._id === action.payload.chat._id
+      );
+      if (!find) {
+        state.notification.push(action.payload);
+      }
+    },
+    filternotify: (state, action) => {
+      state.notification = state.notification.filter(
+        (item) => item.chat._id !== action.payload.chat._id
+      );
+    },
   },
 });
 
-export const { setcredential, cleardata, selected, setter, nameUpdate } =
-  userSlice.actions;
+export const {
+  setcredential,
+  cleardata,
+  selected,
+  setter,
+  nameUpdate,
+  notify,
+  filternotify,
+} = userSlice.actions;
 
 export default userSlice.reducer;

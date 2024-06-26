@@ -75,12 +75,11 @@ connect();
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 if (process.env.mode === "production") {
-  app.use(express.static(path.join(__dirname, "/frontend/dist")));
+  app.use(express.static(path.join(__dirname,"..","/frontend/dist")));
   app.get("*", (req, res) => {
-    res.sendFile(path.join(__dirname, "/frontend/dist/index.html"));
+    res.sendFile(path.join(__dirname,'..', "/frontend/dist/index.html"));
   });
-}
-console.log(path.join(__dirname, "..", "/frontend"));
+}console.log(path.join(__dirname, "..", "/frontend"));
 httpServer.listen(process.env.PORT, () => {
   console.log("server started");
 });

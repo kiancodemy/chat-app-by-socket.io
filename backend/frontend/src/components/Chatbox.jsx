@@ -14,6 +14,8 @@ function Chatbox() {
 
   const [updateopener, setopener] = useState(false);
 
+  //open model//
+
   const openUpdater = () => {
     if (selector) {
       setopener((prev) => !prev);
@@ -25,6 +27,8 @@ function Chatbox() {
       });
     }
   };
+
+  //close model//
 
   const closer = () => {
     setopener(false);

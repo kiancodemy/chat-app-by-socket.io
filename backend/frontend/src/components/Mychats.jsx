@@ -13,6 +13,7 @@ function Mychats() {
   const dispatch = useDispatch();
 
   const { data, isloading } = useAllchatsQuery("s");
+  ///close funtion
   const closer = () => {
     setopengroup(false);
   };

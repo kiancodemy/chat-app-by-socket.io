@@ -12,15 +12,16 @@ function App() {
       sx={{
         minHeight: "100vh",
         display: "flex",
-        alignItems: "start",
+        alignItems: "center",
 
         backgroundImage: "url(/1.jpg)",
         backgroundSize: "cover",
       }}
     >
       <Routes>
-        <Route path="/" element={<Home />} />
-
+        <Route element={<Private></Private>}>
+          <Route path="/" element={<Home />} />
+        </Route>
         <Route path="/chat" element={<Chat />} />
       </Routes>
       <ToastContainer limit={2} transition={Slide}></ToastContainer>

@@ -21,6 +21,13 @@ const apiregister = Myapi.injectEndpoints({
 
       providesTags: ["all"],
     }),
+    Getchatbyid: builder.mutation({
+      query: (data) => ({
+        url: `/chats/get/${data}`,
+        method: "POST",
+        credentials: "include",
+      }),
+    }),
 
     Removegroup: builder.mutation({
       query: (data) => ({
@@ -43,7 +50,7 @@ const apiregister = Myapi.injectEndpoints({
     }),
     Creategroup: builder.mutation({
       query: (data) => ({
-        url: `/chats/group`,
+        url: "/chats/groups",
         method: "POST",
         credentials: "include",
         body: data,
@@ -72,6 +79,7 @@ export const {
   useAllchatsQuery,
   useSendmessageMutation,
   useRemovegroupMutation,
+  useGetchatbyidMutation,
   useAccesschatMutation,
   useCreategroupMutation,
   useAllmessagesQuery,

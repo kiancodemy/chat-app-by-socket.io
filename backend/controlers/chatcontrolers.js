@@ -70,6 +70,7 @@ export const createGroup = async (req, res) => {
     if (!req.body.name || !req.body.users) {
       throw new Error("there is not information");
     }
+
     let user = req.body.users;
     if (user.length < 2) {
       throw new Error("more than one user is needed");
@@ -141,6 +142,27 @@ export const removegroup = async (req, res) => {
       throw new Error("no user found ");
     }
     res.status(200).json(find);
+  } catch (err) {
+    res.status(404).json({ message: err.message });
+  }
+};
+
+export const getByid = async (req, res) => {
+  try {
+    const query = Chat.findById(req.params.id)
+      .populate("users", "-password")
+      .populate("groupAdmin", "-password")
+      .populate("latestMessage")
+      .sort({
+        updatedAt: -1,
+      });
+
+    const all = await User.populate(query, {
+      path: "latestMessage.sender",
+      select: "name image email",
+    });
+
+    res.status(201).json(all);
   } catch (err) {
     res.status(404).json({ message: err.message });
   }

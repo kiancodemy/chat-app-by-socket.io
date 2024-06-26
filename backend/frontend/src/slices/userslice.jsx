@@ -38,7 +38,7 @@ export const userSlice = createSlice({
     },
     filternotify: (state, action) => {
       state.notification = state.notification.filter(
-        (item) => item.chat._id !== action.payload.chat._id
+        (item) => item.chat._id !== action.payload._id
       );
     },
   },

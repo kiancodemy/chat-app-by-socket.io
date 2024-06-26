@@ -2,26 +2,25 @@ import React from "react";
 import { Box, Typography, Button, TextField } from "@mui/material";
 import disableScroll from "disable-scroll";
 import { toast } from "react-toastify";
-import { nameUpdate } from "../slices/userslice";
-
+import { nameUpdate, setter } from "../slices/userslice";
+import { useDispatch, useSelector } from "react-redux";
 import { useState } from "react";
-import { setter } from "../slices/userslice";
+
 import {
   useRemovegroupMutation,
   useRenamegroupMutation,
 } from "../slices/chatapi";
-import { useDispatch, useSelector } from "react-redux";
+
 function GroupModal({ closer }) {
-  const [name, setname] = useState("");
   const [data] = useRemovegroupMutation();
-  const [info, { isLoading }] = useRenamegroupMutation();
+  const [info] = useRenamegroupMutation();
 
   const dispatch = useDispatch();
   const select = useSelector((state) => state.auth.selected);
 
   const [update, setupdate] = useState("");
 
-  //function for remove  chat//
+  //function for delete  chat//
   const deleter = async () => {
     try {
       const deleter = await data({ id: select._id }).unwrap();
@@ -39,6 +38,7 @@ function GroupModal({ closer }) {
       });
     }
   };
+  //update function
   const updater = async () => {
     try {
       if (!update) {

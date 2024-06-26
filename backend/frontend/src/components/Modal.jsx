@@ -1,4 +1,4 @@
-import { Box, Typography, Button, Menu } from "@mui/material";
+import { Box, Typography, Button } from "@mui/material";
 import disableScroll from "disable-scroll";
 import React from "react";
 function Modal({ userinfo, closer }) {

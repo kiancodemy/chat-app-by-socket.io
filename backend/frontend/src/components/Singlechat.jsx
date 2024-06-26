@@ -97,6 +97,8 @@ function Singlechat() {
     });
   });
 
+  // send message function //
+
   const submithandler = async () => {
     try {
       const send = await data({ content: neww, id: selector._id }).unwrap();

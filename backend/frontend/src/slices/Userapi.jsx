@@ -19,9 +19,8 @@ const apiregister = Myapi.injectEndpoints({
     Login: builder.mutation({
       query: (data) => ({
         url: `/users/login`,
-        credentials: "include",
-
         method: "POST",
+        credentials: "include",
         body: data,
       }),
     }),

@@ -1,24 +1,14 @@
-import { Container, Box, Typography } from "@mui/material";
+import { Container, Box } from "@mui/material";
 import Tab from "@mui/material/Tab";
 import TabContext from "@mui/lab/TabContext";
 import TabList from "@mui/lab/TabList";
 import Login from "./Login";
 import Signup from "./Signup";
 import TabPanel from "@mui/lab/TabPanel";
-import { useState, useEffect } from "react";
-import { useSelector } from "react-redux";
-import { useNavigate } from "react-router-dom";
-function Home() {
-  const navigate = useNavigate();
-  const [value, setValue] = useState("1");
-  const { userinfo } = useSelector((state) => state.auth);
+import { useState } from "react";
 
-  // function for pre logged users in to page//
-  useEffect(() => {
-    if (userinfo) {
-      navigate("/chat");
-    }
-  }, [userinfo]);
+function Home() {
+  const [value, setValue] = useState("1");
 
   const handleChange = (event, newValue) => {
     setValue(newValue);
@@ -52,8 +42,8 @@ function Home() {
                   fontSize: "14px",
 
                   "&.Mui-selected": {
-                    backgroundColor: "#008DDA", // Set your desired selected tab background color
-                    color: "white", // Set your desired selected tab label color
+                    backgroundColor: "#008DDA",
+                    color: "white",
                   },
                 }}
                 label="login"
@@ -70,8 +60,8 @@ function Home() {
 
                   "&.Mui-selected": {
                     borderBottom: "none",
-                    backgroundColor: "#008DDA", // Set your desired selected tab background color
-                    color: "white", // Set your desired selected tab label color
+                    backgroundColor: "#008DDA",
+                    color: "white",
                   },
                 }}
                 label="sig up"

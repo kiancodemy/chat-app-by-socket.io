@@ -19,7 +19,7 @@ import { useForm } from "react-hook-form";
 
 function Login() {
   const [showPassword, setShowPassword] = useState(false);
-  const [log, { isLoading: isUpdating }] = useLoginMutation();
+  const [log] = useLoginMutation();
   const navigate = useNavigate();
   const dispatch = useDispatch();
 

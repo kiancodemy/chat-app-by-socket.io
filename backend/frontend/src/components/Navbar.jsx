@@ -13,6 +13,7 @@ import {
 import UserItem from "./UserItem";
 
 import { useAccesschatMutation } from "../slices/chatapi";
+import { useGetchatbyidMutation } from "../slices/chatapi";
 import { useLogoutMutation, useAllusersQuery } from "../slices/Userapi";
 import { toast } from "react-toastify";
 
@@ -34,10 +35,8 @@ function Navbar() {
   const [anchorEl, setAnchorEl] = useState(null);
 
   const { userinfo, notification } = useSelector((state) => state.auth);
-  //logout
 
   const [updater] = useLogoutMutation();
-  //access chat//
 
   ///open close states//
 
@@ -48,9 +47,10 @@ function Navbar() {
   const [anchorEll, setAnchorEll] = useState(null);
 
   const [find, setfind] = useState("");
-  // all users//
+
   const { data: info, isloading } = useAllusersQuery(find);
   const [datas] = useAccesschatMutation();
+  const [data] = useGetchatbyidMutation();
 
   //function for notification//
   let openn = Boolean(anchorEll);
@@ -59,13 +59,17 @@ function Navbar() {
   };
 
   //close notfification//
-  const closenotify = (item) => {
-    /*dispatch(filternotify(item));*/
-    console.log(item);
-    /*dispatch(selected(item));*/
+  const closenotify = async (item) => {
+    const find = await data(item.chat._id).unwrap();
+
+    dispatch(selected(find));
+
+    dispatch(filternotify(find));
 
     setAnchorEll(null);
   };
+
+  /// create  new chat//
 
   const access = async (id) => {
     try {
@@ -118,6 +122,8 @@ function Navbar() {
     setopen(true);
   };
 
+  //close profile function//
+
   const closeprofile = () => {
     setAnchorEl(null);
     setopen(false);
@@ -147,8 +153,6 @@ function Navbar() {
       });
     }
   };
-
-  ///main function///
 
   return (
     <Box
@@ -210,12 +214,22 @@ function Navbar() {
             "aria-labelledby": "basic-button",
           }}
         >
-          {notification.length > 0 &&
+          {notification.length > 0 ? (
             notification.map((item) => (
               <MenuItem key={item._id} onClick={() => closenotify(item)}>
                 {item.chat.isGroup ? item.chat.chatName : item.chat.users[1]}
               </MenuItem>
-            ))}
+            ))
+          ) : (
+            <MenuItem>
+              <Typography
+                onClick={() => setAnchorEll(null)}
+                sx={{ textTransform: "capitalize" }}
+              >
+                nothing new
+              </Typography>
+            </MenuItem>
+          )}
         </Menu>
 
         <Tooltip

@@ -6,7 +6,6 @@ import {
   InputLabel,
   TextField,
   Select,
-  Avatar,
   MenuItem,
 } from "@mui/material";
 import { toast } from "react-toastify";
@@ -22,11 +21,15 @@ function GroupModal({ closer }) {
   const { data, isLoading } = useAllusersQuery("");
   const [info] = useCreategroupMutation();
 
+  ///multiple seceltor//
+
   const handleChange = (e) => {
     setPersonName(
       typeof e.target.value === "string" ? value.split(",") : e.target.value
     );
   };
+
+  ///function for creating group//
 
   const creator = async () => {
     try {
@@ -36,7 +39,9 @@ function GroupModal({ closer }) {
           autoClose: 2000,
         });
       }
-      const create = await info({ name: name, users: personName }).unwrap();
+
+      await info({ name: name, users: personName }).unwrap();
+      
       toast.success("Created Group Successfully !", {
         position: "top-right",
         autoClose: 2000,
@@ -109,7 +114,7 @@ function GroupModal({ closer }) {
           sx={{ backgroundColor: "#ddd", borderRadius: "5px", padding: "2px" }}
         >
           {!isLoading &&
-            data?.map((item) => (
+            data.map((item) => (
               <MenuItem UserItem key={item._id} value={item._id}>
                 {item.name}
               </MenuItem>

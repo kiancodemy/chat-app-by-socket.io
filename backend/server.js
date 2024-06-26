@@ -3,6 +3,9 @@ import cors from "cors";
 import { Server } from "socket.io";
 import cookieparse from "cookie-parser";
 import dotenv from "dotenv";
+import path, { dirname } from "path";
+
+import { fileURLToPath } from "url";
 import { createServer } from "http";
 import router from "./router/Userroute.js";
 import connect from "./config/db.js";
@@ -23,6 +26,7 @@ const httpServer = createServer(app);
 const io = new Server(httpServer, {
   cors: {
     origin: "http://localhost:5173",
+    credentials: true,
   },
 });
 
@@ -69,6 +73,14 @@ app.use("/chats", chatrouter);
 app.use("/message", message);
 connect();
 
+const __dirname = dirname(fileURLToPath(import.meta.url));
+if (process.env.mode === "production") {
+  app.use(express.static(path.join(__dirname, "/frontend/dist")));
+  app.get("*", (req, res) => {
+    res.sendFile(path.join(__dirname, "/frontend/dist/index.html"));
+  });
+}
+console.log(path.join(__dirname, "..", "/frontend"));
 httpServer.listen(process.env.PORT, () => {
   console.log("server started");
 });

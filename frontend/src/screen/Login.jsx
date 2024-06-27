@@ -95,8 +95,8 @@ function Login() {
           required: { value: true, message: "Email Is Required" },
         })}
         sx={{
-          "& .input:-internal-autofill-selected":{
-            backgroundColor:"white",
+          "& .MuiInputBase-root": {
+            backgroundColor: "white",
           },
           "& .MuiInputLabel-root.Mui-focused": {
             color: !errors?.email && "#000",
@@ -127,8 +127,8 @@ function Login() {
           required: { value: true, message: "Password Is Required" },
         })}
         sx={{
-          "& .input:-internal-autofill-selected":{
-            backgroundColor:"white",
+          "& .MuiInputBase-root": {
+            backgroundColor: "white",
           },
           "& .MuiInputLabel-root.Mui-focused": {
             color: !errors?.password && "#000",

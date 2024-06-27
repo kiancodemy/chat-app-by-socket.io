@@ -97,7 +97,7 @@ function Signup() {
           },
         })}
         sx={{
-          "& .input:-internal-autofill-selected": {
+          "& .MuiInputBase-root": {
             backgroundColor: "white",
           },
           "& .MuiInputLabel-root.Mui-focused": {
@@ -129,7 +129,7 @@ function Signup() {
           required: { value: true, message: "Password Is Required" },
         })}
         sx={{
-          "& .input:-internal-autofill-selected": {
+          "& .MuiInputBase-root": {
             backgroundColor: "white",
           },
           "& .MuiInputLabel-root.Mui-focused": {

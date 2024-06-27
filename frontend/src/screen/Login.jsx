@@ -95,6 +95,9 @@ function Login() {
           required: { value: true, message: "Email Is Required" },
         })}
         sx={{
+          "& .input:-internal-autofill-selected"{
+            backgroundColor:"white",
+          },
           "& .MuiInputLabel-root.Mui-focused": {
             color: !errors?.email && "#000",
           },
@@ -124,6 +127,9 @@ function Login() {
           required: { value: true, message: "Password Is Required" },
         })}
         sx={{
+          "& .input:-internal-autofill-selected"{
+            backgroundColor:"white",
+          },
           "& .MuiInputLabel-root.Mui-focused": {
             color: !errors?.password && "#000",
           },
@@ -142,8 +148,8 @@ function Login() {
         sx={{
           textTransform: "capitalize",
           color: "white",
-          backgroundColor: "#0071ae",
-          "&:hover": { backgroundColor: "#008DDA", color: "white" },
+          backgroundColor: "#008DDA",
+          "&:hover": { backgroundColor: "#0071ae", color: "white" },
         }}
       >
         login
@@ -154,8 +160,8 @@ function Login() {
         sx={{
           textTransform: "capitalize",
           color: "white",
-          backgroundColor: "#b92121",
-          "&:hover": { backgroundColor: "#E72929", color: "white" },
+          backgroundColor: "#E72929",
+          "&:hover": { backgroundColor: "#b92121", color: "white" },
         }}
       >
         get guest user credential

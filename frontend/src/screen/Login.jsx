@@ -95,7 +95,7 @@ function Login() {
           required: { value: true, message: "Email Is Required" },
         })}
         sx={{
-          "&:input:-internal-autofill-selected": {
+          "&:-internal-autofill-selected": {
             backgroundColor: "white",
           },
           "& .MuiInputLabel-root.Mui-focused": {
@@ -127,7 +127,7 @@ function Login() {
           required: { value: true, message: "Password Is Required" },
         })}
         sx={{
-          "&:input:-internal-autofill-selected": {
+          "&:-internal-autofill-selected": {
             backgroundColor: "white",
           },
           "& .MuiInputLabel-root.Mui-focused": {

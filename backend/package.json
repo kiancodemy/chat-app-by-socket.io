@@ -5,8 +5,8 @@
   "description": "",
   "main": "server.js",
   "scripts": {
-    "start": "node server.js",
-    "build": "npm install --prefix ../frontend && npm run build --prefix ../frontend && npm install"
+    "starter": "npm install",
+    "build": "node server.js"
   },
   "author": "kian",
   "license": "ISC",

@@ -45,7 +45,8 @@ export const login = async (req, res) => {
     await res.cookie("jwt", token, {
       httpOnly: true,
       maxAge: 36000000,
-      secure: false,
+      sameSite: "None",
+      secure: process.env.MODE !== "development",
     });
 
     res.status(200).json({
@@ -87,7 +88,9 @@ export const getall = async (req, res) => {
 
 export const logout = async (req, res) => {
   try {
-    await res.cookie("jwt");
+    await res.cookie("jwt", "", {
+      expires: new Date(0),
+    });
     res.status(201).json({ message: "successfully logout" });
   } catch (err) {
     res.status(404).json({
